@@ -2,5 +2,34 @@
 #defien _TREE_H_INCLUDED
 
 
+typedef enum
+{
+	OperatorPlus,
+	OperatorMinus,
+	OperatorMul,
+	OperatorDiv,
+} TreeNodeType;
+
+typedef struct TreeNode TreeNode;
+struct TreeNode
+{
+	TreeNodeType type;
+	TreeNode* left;
+	TreeNode* right;
+	double value;
+};
+
+typedef struct
+{
+	TreeNode* root;
+	int height;
+} Tree;
+
+TreeNode* treeNodeCreate(TreeNodeType type);
+void treeNodeFree(TreeNode* node);
+
+Tree* treeCreate(TreeNode* root);
+void treeFree(Tree* tree);
+
 
 #endif

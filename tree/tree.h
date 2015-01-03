@@ -10,6 +10,7 @@ typedef enum
 	OperatorDiv,
 	OperandConst,
 	OperandVar,
+	OperandNegVar,
 } TreeNodeType;
 
 typedef struct TreeNode TreeNode;

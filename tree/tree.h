@@ -31,5 +31,10 @@ void treeNodeFree(TreeNode* node);
 Tree* treeCreate(TreeNode* root);
 void treeFree(Tree* tree);
 
+int treeHeightFromRoot(TreeNode* root, int currentHeight);
+void treeDataFree(TreeNode* root);
+TreeItem* treeDataCopy(TreeNode* root);
+
+
 
 #endif

@@ -8,6 +8,8 @@ typedef enum
 	OperatorMinus,
 	OperatorMul,
 	OperatorDiv,
+	OperandConst,
+	OperandVar,
 } TreeNodeType;
 
 typedef struct TreeNode TreeNode;

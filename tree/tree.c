@@ -1,4 +1,6 @@
 #include <malloc.h>
+#include <string.h>
+#include <math.h>
 #include "tree.h"
 
 TreeNode* treeNodeCreate(TreeNodeType type)
@@ -6,7 +8,7 @@ TreeNode* treeNodeCreate(TreeNodeType type)
 	TreeNode* node = malloc(sizeof(TreeNode));
 	node->type = type;
 	node->left = 0;
-	node=>right = 0;
+	node->right = 0;
 	node->value = 0;
 	return node;
 }
@@ -33,15 +35,15 @@ void treeFree(Tree* tree)
 int treeHeightFromRoot(TreeNode* root, int currentHeight)
 {
 	if(!root) return 0;
-	return 1 + treeHeight(root->left) + treeHeight(root->right);
+	return 1 + fmax(treeHeightFromRoot(root->left, currentHeight), treeHeightFromRoot(root->right, currentHeight));
 }
 
 void treeDataFree(TreeNode* root)
 {
 	if(root)
 	{
-		treeFreeData(root->left);
-		treeFreeData(root->right);
+		treeDataFree(root->left);
+		treeDataFree(root->right);
 		treeNodeFree(root);
 	}
 }

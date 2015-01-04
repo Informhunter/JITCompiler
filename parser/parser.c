@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include "tree/tree.h"
 #include "parser.h"
 
@@ -36,7 +37,7 @@ static TreeNodeType getOperandType(char* expression, int start, int end)
 double extractConstValue(char* expression, int start, int end)
 {
 	double result;
-	sscanf(expr + start, "%lf", &result);
+	sscanf(expression + start, "%lf", &result);
 	return result;
 }
 
@@ -120,7 +121,7 @@ static int hasOuterBrackets(char* expr, int start, int end)
 
 static TreeNode* buildTreeForExpressionR(char* expression, int start, int end)
 {
-	TreeItem* root;
+	TreeNode* root;
 	int divIndex;
 	while(hasOuterBrackets(expression, start, end))
 	{
@@ -136,8 +137,8 @@ static TreeNode* buildTreeForExpressionR(char* expression, int start, int end)
 	}
 	else
 	{
-		root = treeNodeCreate(getOperatorType(expression, start, end));
-		if(root->type == OperatorConst)
+		root = treeNodeCreate(getOperandType(expression, start, end));
+		if(root->type == OperandConst)
 		{
 			root->value = extractConstValue(expression, start, end);
 		}
@@ -149,7 +150,7 @@ Tree* buildTreeForExpression(char* expression)
 {
 	Tree* tree;
 	TreeNode* root;
-	root = buildTreeForExpression(expression, 0, strlen(expression) - 1);
+	root = buildTreeForExpressionR(expression, 0, strlen(expression) - 1);
 	tree = treeCreate(root);
 	treeDataFree(root);
 	return tree;

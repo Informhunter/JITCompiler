@@ -56,3 +56,31 @@ TreeNode* treeDataCopy(TreeNode* root)
 	node->right = treeDataCopy(root->right);
 	return node;
 }
+
+static double calcTreeFromRoot(TreeNode* root, double x)
+{
+	
+	if(root->type == OperandVar)
+		return x;
+	if(root->type == OperandNegVar)
+		return -x;
+	if(root->type == OperandConst)
+		return root->value;
+		
+	switch(root->type)
+	{
+		case OperatorPlus:
+			return calcTreeFromRoot(root->left, x) + calcTreeFromRoot(root->right, x);
+		case OperatorMinus:
+			return calcTreeFromRoot(root->left, x) - calcTreeFromRoot(root->right, x);
+		case OperatorMul:
+			return calcTreeFromRoot(root->left, x) * calcTreeFromRoot(root->right, x);
+		case OperatorDiv:
+			return calcTreeFromRoot(root->left, x) / calcTreeFromRoot(root->right, x);
+	}
+}
+
+double calcTree(Tree* tree, double x)
+{
+	return calcTreeFromRoot(tree->root, x);
+}

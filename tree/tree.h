@@ -1,5 +1,5 @@
 #ifndef _TREE_H_INCLUDED
-#defien _TREE_H_INCLUDED
+#define _TREE_H_INCLUDED
 
 
 typedef enum
@@ -38,7 +38,7 @@ double calcTree(Tree* tree, double x);
 
 int treeHeightFromRoot(TreeNode* root, int currentHeight);
 void treeDataFree(TreeNode* root);
-TreeItem* treeDataCopy(TreeNode* root);
+TreeNode* treeDataCopy(TreeNode* root);
 
 
 

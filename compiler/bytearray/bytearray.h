@@ -4,7 +4,7 @@
 typedef struct
 {
 	int size;
-	int end;
+	int dataSize;
 	char* array;
 } ByteArray;
 

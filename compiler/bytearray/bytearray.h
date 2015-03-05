@@ -12,7 +12,8 @@ ByteArray* byteArrayCreate(int initialSize);
 void byteArrayFree(ByteArray* array);
 
 void byteArrayAppend(ByteArray* array, char* data, int dataSize);
-ByteArray* byteArrayCat(ByateArray* array1, ByteArray* array2);
+void byteArrayAppendArray(ByteArray* array, const ByteArray* dataArray)
+ByteArray* byteArrayCat(const ByateArray* array1, const ByteArray* array2);
 
 
 #endif

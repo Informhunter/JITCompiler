@@ -6,13 +6,7 @@
 
 typedef double (*Func)(double);
 
-typedef struct
-{
-	ByteArray* data;
-	Func function;
-} CompiledFunc;
-
-CompiledFunc compileTree(Tree* tree);
+ByteArray* compileTree(Tree* tree);
 
 
 #endif

@@ -15,7 +15,7 @@ void byteArrayFree(ByteArray* array)
 	free(array);
 }
 
-void byteArrayAppend(ByteArray* array, const char* data, int dataSize)
+void byteArrayAppendData(ByteArray* array, const char* data, int dataSize)
 {
 	if(array->size - array->dataSize < dataSize)
 	{
@@ -23,6 +23,11 @@ void byteArrayAppend(ByteArray* array, const char* data, int dataSize)
 		array->data = realloc(array->data, array->size);
 	}
 	memcpy(array->data + array->dataSize, data, dataSize);
+}
+
+void byteArrayAppendArray(ByteArray* array, const ByteArray* dataArray)
+{
+	byteArrayAppendData(array, dataArray->data, dataArray->dataSize);
 }
 
 ByteArray* byteArrayCat(const ByteArray* array1, const ByteArray* array2)

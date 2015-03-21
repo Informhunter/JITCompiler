@@ -6,24 +6,54 @@
 static void generateCodeR(TreeNode* root, ByteArray* resultCode, float* currentSP)
 {
     ByteArray* rc = resultCode;
-    generateCodeR(root->left, rc);
-    generateCodeR(root->right, rc);
+    generateCodeR(root->right, rc, currentSP); //Generating in this order, because we need 
+    generateCodeR(root->left, rc, currentSP);  //left operand to be on top of the stack
+    currentSP += sizeof(float); //Now it points to the top of the stack (left operand)
     switch(root->type)
     {
         case OperatorPlus:
+        	genFLD_m32fp(code, currentSP);
+        	currentSP -= sizeof(float);
+        	genFADD_m32fp(code, currentSP);
+        	genFSTP(code, currentSP);
+        	break;
 
         case OperatorMinus:
+        	genFLD_m32fp(code, currentSP);
+        	currentSP -= sizeof(float);
+        	genFSUB_m32fp(code, currentSP);
+        	genFSTP(code, currentSP);
+        	break;
 
         case OperatorMul:
+        	genFLD_m32fp(code, currentSP);
+        	currentSP -= sizeof(float);
+        	genFMUL_m32fp(code, currentSP);
+        	genFSTP(code, currentSP);
+        	break;
 
         case OperatorDiv:
+        	genFLD_m32fp(code, currentSP);
+        	currentSP -= sizeof(float);
+        	genFDIV_m32fp(code, currentSP);
+        	genFSTP(code, currentSP);
+        	break;
 
         case OperandVar:
+        	currentSP += sizeof(float);
+        	genMOV_m32_EAX(code, currentSP);
+        	break;
 
         case OperandNegVar:
+        	currentSP += sizeof(float);
+        	genMOV_m32_EAX(code, currentSP);
+        	genFCHS(code);
+        	break;
 
         case OperandConst:
-            
+            currentSP += sizeof(float);
+            genMOV_m32_imm32(code, currentSP, (int32_t) root->value);
+            break;
     }
 }
 

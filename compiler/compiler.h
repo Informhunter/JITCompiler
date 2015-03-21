@@ -6,7 +6,15 @@
 
 typedef double (*Func)(double);
 
-ByteArray* compileTree(Tree* tree);
+typdef struct
+{
+    Func run;
+    ByteArray* code;
+    double* stack;
+} CompiledFunc;
+
+CompiledFunc compileTree(Tree* tree);
+void freeCompiledFunc(CompiledFunc f);
 
 
 #endif

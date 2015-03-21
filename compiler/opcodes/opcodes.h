@@ -1,7 +1,7 @@
 #ifndef _OPCODES_H_INCLUDED
 #define _OPCODES_H_INCLUDED
 
-#include "bytearray/bytearray.h"
+#include "compiller/bytearray/bytearray.h"
 
 void genFLD_m32pf(ByteArray* code, void* srcAddress);
 void genFSTP(ByteArray* code, void* dstAddress);

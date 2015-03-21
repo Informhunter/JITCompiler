@@ -4,7 +4,7 @@
 #include "tree/tree.h"
 #include "bytearray/bytearray.h"
 
-typedef float (*Func)(float);
+typedef float _cdecl (*Func)(float);
 
 typdef struct
 {

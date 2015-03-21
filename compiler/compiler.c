@@ -1,4 +1,5 @@
 #include "compiler.h"
+#include "opcodes/opcodes.h"
 #include "bytearray/bytearray.h"
 #include <Windows.h>
 
@@ -20,7 +21,7 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode, float* currentS
         case OperandVar:
 
         case OperandNegVar:
-            
+
         case OperandConst:
             
     }
@@ -30,6 +31,7 @@ static void generateCode(Tree* tree, float* stack, ByteArray* resultCode)
 {
     ByteArray* rc = resultCode;
     //Some stack allocation stuff + argument parsing
+    gen
     
     //Calculating
     generateCodeR(tree->root, rc);

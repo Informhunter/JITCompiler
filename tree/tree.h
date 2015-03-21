@@ -19,7 +19,7 @@ struct TreeNode
 	TreeNodeType type;
 	TreeNode* left;
 	TreeNode* right;
-	double value;
+	float value;
 };
 
 typedef struct
@@ -34,7 +34,7 @@ void treeNodeFree(TreeNode* node);
 Tree* treeCreate(TreeNode* root);
 void treeFree(Tree* tree);
 
-double calcTree(Tree* tree, double x);
+float calcTree(Tree* tree, float x);
 
 int treeHeightFromRoot(TreeNode* root, int currentHeight);
 void treeDataFree(TreeNode* root);

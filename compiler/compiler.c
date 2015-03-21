@@ -2,7 +2,7 @@
 #include "bytearray/bytearray.h"
 #include <Windows.h>
 
-static void generateCodeR(TreeNode* root, ByteArray* resultCode)
+static void generateCodeR(TreeNode* root, ByteArray* resultCode, float* currentSP)
 {
 	ByteArray* rc = resultCode;
 	generateCodeR(root->left, rc);
@@ -26,7 +26,7 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
 	}
 }
 
-static void generateCode(Tree* tree, double* stack, ByteArray* resultCode)
+static void generateCode(Tree* tree, float* stack, ByteArray* resultCode)
 {
 	ByteArray* rc = resultCode;
 	//Some stack allocation stuff + argument parsing
@@ -41,10 +41,10 @@ CompiledFunc compileTree(Tree* tree);
 	CompiledFunc result;
 	DWORD oldP;
 	ByteArray* code;
-	double* stack;
+	float* stack;
 
 	code = byteArrayCreate(2);
-	stack = (double *)malloc(sizeof(double) * (tree->height + 1));
+	stack = (float *)malloc(sizeof(float) * (tree->height + 1));
 
 	generateCode(tree, stack, code);
 
@@ -53,7 +53,7 @@ CompiledFunc compileTree(Tree* tree);
 	result.code = code;
 	result.run = (Func)result.code->data;
 	result.stack = stack;
-	
+
 	return result;
 }
 

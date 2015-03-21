@@ -59,7 +59,7 @@ TreeNode* treeDataCopy(TreeNode* root)
 	return node;
 }
 
-static double calcTreeFromRoot(TreeNode* root, double x)
+static float calcTreeFromRoot(TreeNode* root, float x)
 {
 	
 	if(root->type == OperandVar)
@@ -82,7 +82,7 @@ static double calcTreeFromRoot(TreeNode* root, double x)
 	}
 }
 
-double calcTree(Tree* tree, double x)
+float calcTree(Tree* tree, float x)
 {
 	return calcTreeFromRoot(tree->root, x);
 }

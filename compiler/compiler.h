@@ -4,13 +4,13 @@
 #include "tree/tree.h"
 #include "bytearray/bytearray.h"
 
-typedef double (*Func)(double);
+typedef float (*Func)(float);
 
 typdef struct
 {
     Func run;
     ByteArray* code;
-    double* stack;
+    float* stack;
 } CompiledFunc;
 
 CompiledFunc compileTree(Tree* tree);

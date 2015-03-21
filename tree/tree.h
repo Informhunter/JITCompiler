@@ -4,28 +4,28 @@
 
 typedef enum
 {
-	OperatorPlus,
-	OperatorMinus,
-	OperatorMul,
-	OperatorDiv,
-	OperandConst,
-	OperandVar,
-	OperandNegVar,
+    OperatorPlus,
+    OperatorMinus,
+    OperatorMul,
+    OperatorDiv,
+    OperandConst,
+    OperandVar,
+    OperandNegVar,
 } TreeNodeType;
 
 typedef struct TreeNode TreeNode;
 struct TreeNode
 {
-	TreeNodeType type;
-	TreeNode* left;
-	TreeNode* right;
-	float value;
+    TreeNodeType type;
+    TreeNode* left;
+    TreeNode* right;
+    float value;
 };
 
 typedef struct
 {
-	TreeNode* root;
-	int height;
+    TreeNode* root;
+    int height;
 } Tree;
 
 TreeNode* treeNodeCreate(TreeNodeType type);

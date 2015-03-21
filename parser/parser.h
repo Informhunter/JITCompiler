@@ -5,11 +5,11 @@
 
 typedef enum
 {
-	MinPriority,
-	PriorityPlusMinus,
-	PriorityMulDiv,
-	MaxPriority,
-	BadPriority,
+    MinPriority,
+    PriorityPlusMinus,
+    PriorityMulDiv,
+    MaxPriority,
+    BadPriority,
 } OperatorPriority;
 
 Tree* buildTreeForExpression(char* expression);

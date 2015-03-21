@@ -26,7 +26,7 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
 	}
 }
 
-static void generateCode(Tree* tree, ByteArray* resultCode)
+static void generateCode(Tree* tree, double* stack, ByteArray* resultCode)
 {
 	ByteArray* rc = resultCode;
 	//Some stack allocation stuff + argument parsing
@@ -36,16 +36,29 @@ static void generateCode(Tree* tree, ByteArray* resultCode)
 	//Return value stuff
 }
 
-Func compileTree(Tree* tree);
+CompiledFunc compileTree(Tree* tree);
 {
+	CompiledFunc result;
 	DWORD oldP;
-	char* resultCode;
 	ByteArray* code;
+	double* stack;
+
 	code = byteArrayCreate(2);
-	generateCode(tree, code);
-	resultCode = malloc(code->dataSize);
-	memcpy(resultCode, code->data, code->dataSize);
-	VirtualProtect(resultCode, code->dataSize, PAGE_EXECUTE_READ_WRITE, &oldP);
-	ByteArrayFree(code);
-	return (Func) resultCode;
+	stack = (double *)malloc(sizeof(double) * (tree->height + 1));
+
+	generateCode(tree, stack, code);
+
+	VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READ_WRITE, &oldP);
+
+	result.code = code;
+	result.run = (Func)result.code->data;
+	result.stack = stack;
+	
+	return result;
+}
+
+void compiledFuncFree(CompiledFunc f)
+{
+	ByteArrayFree(f.code);
+	free(f.stack);
 }

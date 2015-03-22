@@ -53,22 +53,18 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
                 genDIV_DWORD_PTR_EDX(code);
                 break;
         }
-        
+
         genFSTP_DWORD_PTR_EDX(code);
     }
 }
 
-static void generateCode(Tree* tree, ByteArray* stack, ByteArray* consts, ByteArray* resultCode)
+static void generateCode(Tree* tree, void** stack, void** consts, ByteArray* resultCode)
 {
     ByteArray* code = resultCode;
-    char** sData = malloc(sizeof(char*));
-    char** cData = malloc(sizeof(char*));
-    *sData = stack->data;
-    *cData = consts->data;
-    //Some stack allocation stuff + argument parsing
+    //Argument parsing
     genMOV_EAX_ESP_4(code);
-    genMOV_EDX_DWORD_PTR(code, (int32_t*)sData);
-    genMOV_ECX_DWORD_PTR(code, (int32_t*)cData);
+    genMOV_EDX_DWORD_PTR(code, (int32_t*)stack);
+    genMOV_ECX_DWORD_PTR(code, (int32_t*)consts);
     //Calculating
     generateCodeR(tree->root, code);
     //Return value stuff
@@ -104,12 +100,22 @@ CompiledFunc compileTree(Tree* tree)
     ByteArray* code;
     ByteArray* stack;
 
+
     code = byteArrayCreate(2);
     consts = byteArrayCreate(2);
     stack = byteArrayCreate(sizeof(float) * (tree->height + 1));
 
+
+
     collectConstsR(tree->root, consts);
-    generateCode(tree, stack, consts, code);
+
+    result.stackP = malloc(sizeof(void*));
+    result.constsP = malloc(sizeof(void*));
+
+    *result.stackP = stack->data;
+    *result.constsP = consts->data;
+
+    generateCode(tree, result.stackP, result.constsP, code);
 
     VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READWRITE, &oldP);
 
@@ -126,4 +132,6 @@ void compiledFuncFree(CompiledFunc f)
     byteArrayFree(f.code);
     byteArrayFree(f.stack);
     byteArrayFree(f.consts);
+    free(f.stackP);
+    free(f.constP);
 }

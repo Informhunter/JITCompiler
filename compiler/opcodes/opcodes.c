@@ -137,3 +137,15 @@ void genADD_ECX_4(ByteArray* code)
 {
     byteArrayAppend(code, "\x83\xC1\x04", 3);
 }
+
+void genMOV_EDX_DWORD_PTR(ByteArray* code, void* srcAddress)
+{
+    byteArrayAppend(code, "\x8B\x15", 2);
+    byteArrayAppend(code, (char *)&srcAddress, 4);
+}
+
+void genMOV_ECX_DWORD_PTR(ByteArray* code, void* srcAddress)
+{
+    byteArrayAppend(code, "\x8B\x0D", 2);
+    byteArrayAppend(code, (char *)&srcAddress, 4);
+}

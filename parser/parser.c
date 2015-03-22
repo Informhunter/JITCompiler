@@ -37,7 +37,7 @@ static TreeNodeType getOperandType(char* expression, int start, int end)
 float extractConstValue(char* expression, int start, int end)
 {
     float result;
-    sscanf(expression + start, "%lf", &result);
+    sscanf(expression + start, "%f", &result);
     return result;
 }
 

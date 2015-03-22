@@ -6,7 +6,7 @@
 
 typedef float _cdecl (*Func)(float);
 
-typdef struct
+typedef struct
 {
     Func run;
     ByteArray* code;

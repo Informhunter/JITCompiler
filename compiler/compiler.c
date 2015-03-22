@@ -5,70 +5,75 @@
 
 static void generateCodeR(TreeNode* root, ByteArray* resultCode, float* currentSP)
 {
-    ByteArray* rc = resultCode;
-    generateCodeR(root->right, rc, currentSP); //Generating in this order, because we need 
-    generateCodeR(root->left, rc, currentSP);  //left operand to be on top of the stack
-    currentSP += sizeof(float); //Now it points to the top of the stack (left operand)
+    ByteArray* code = resultCode;
+    if(root->left && root->right)
+    {
+        generateCodeR(root->right, code, currentSP); //Generating in this order, because we need 
+        currentSP++;
+        generateCodeR(root->left, code, currentSP);  //left operand to be on top of the stack
+        //Now currentSP points to the top of the stack (left operand)
+    }
+
     switch(root->type)
     {
         case OperatorPlus:
-        	genFLD_m32fp(code, currentSP);
-        	currentSP -= sizeof(float);
-        	genFADD_m32fp(code, currentSP);
-        	genFSTP(code, currentSP);
-        	break;
+            genFLD_m32fp(code, currentSP);
+            currentSP--;
+            genFADD_m32fp(code, currentSP);
+            genFSTP(code, currentSP);
+            break;
 
         case OperatorMinus:
-        	genFLD_m32fp(code, currentSP);
-        	currentSP -= sizeof(float);
-        	genFSUB_m32fp(code, currentSP);
-        	genFSTP(code, currentSP);
-        	break;
+            genFLD_m32fp(code, currentSP);
+            currentSP--;
+            genFSUB_m32fp(code, currentSP);
+            genFSTP(code, currentSP);
+            break;
 
         case OperatorMul:
-        	genFLD_m32fp(code, currentSP);
-        	currentSP -= sizeof(float);
-        	genFMUL_m32fp(code, currentSP);
-        	genFSTP(code, currentSP);
-        	break;
+            genFLD_m32fp(code, currentSP);
+            currentSP--;
+            genFMUL_m32fp(code, currentSP);
+            genFSTP(code, currentSP);
+            break;
 
         case OperatorDiv:
-        	genFLD_m32fp(code, currentSP);
-        	currentSP -= sizeof(float);
-        	genFDIV_m32fp(code, currentSP);
-        	genFSTP(code, currentSP);
-        	break;
+            genFLD_m32fp(code, currentSP);
+            currentSP--;
+            genFDIV_m32fp(code, currentSP);
+            genFSTP(code, currentSP);
+            break;
 
         case OperandVar:
-        	currentSP += sizeof(float);
-        	genMOV_m32_EAX(code, currentSP);
-        	break;
+            genMOV_m32_EAX(code, currentSP);
+            break;
 
         case OperandNegVar:
-        	currentSP += sizeof(float);
-        	genMOV_m32_EAX(code, currentSP);
-        	genFCHS(code);
-        	break;
+            genMOV_m32_EAX(code, currentSP);
+            genFLD_m32fp(code, currentSP);
+            genFCHS(code);
+            genFSTP(code, currentSP);
+            break;
 
         case OperandConst:
-            currentSP += sizeof(float);
-            genMOV_m32_imm32(code, currentSP, (int32_t) root->value);
+            genMOV_m32_imm32(code, currentSP, (int32_t*)&root->value);
             break;
     }
 }
 
 static void generateCode(Tree* tree, float* stack, ByteArray* resultCode)
 {
-    ByteArray* rc = resultCode;
+    ByteArray* code = resultCode;
     //Some stack allocation stuff + argument parsing
-    gen
-    
+    genMOV_EAX_ESP_4(code);
     //Calculating
-    generateCodeR(tree->root, rc);
+    generateCodeR(tree->root, code, stack);
     //Return value stuff
+    genFLD_m32fp(code, stack);
+    genRET(code);
 }
 
-CompiledFunc compileTree(Tree* tree);
+CompiledFunc compileTree(Tree* tree)
 {
     CompiledFunc result;
     DWORD oldP;
@@ -80,7 +85,7 @@ CompiledFunc compileTree(Tree* tree);
 
     generateCode(tree, stack, code);
 
-    VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READ_WRITE, &oldP);
+    VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READWRITE, &oldP);
 
     result.code = code;
     result.run = (Func)result.code->data;
@@ -91,6 +96,6 @@ CompiledFunc compileTree(Tree* tree);
 
 void compiledFuncFree(CompiledFunc f)
 {
-    ByteArrayFree(f.code);
+    byteArrayFree(f.code);
     free(f.stack);
 }

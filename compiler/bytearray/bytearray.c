@@ -1,3 +1,5 @@
+#include <malloc.h>
+#include <string.h>
 #include "bytearray.h"
 
 ByteArray* byteArrayCreate(int initialSize)
@@ -15,7 +17,7 @@ void byteArrayFree(ByteArray* array)
 	free(array);
 }
 
-void byteArrayAppendData(ByteArray* array, const char* data, int dataSize)
+void byteArrayAppend(ByteArray* array, const char* data, int dataSize)
 {
 	if(array->size - array->dataSize < dataSize)
 	{
@@ -23,18 +25,5 @@ void byteArrayAppendData(ByteArray* array, const char* data, int dataSize)
 		array->data = realloc(array->data, array->size);
 	}
 	memcpy(array->data + array->dataSize, data, dataSize);
-}
-
-void byteArrayAppendArray(ByteArray* array, const ByteArray* dataArray)
-{
-	byteArrayAppendData(array, dataArray->data, dataArray->dataSize);
-}
-
-ByteArray* byteArrayCat(const ByteArray* array1, const ByteArray* array2)
-{
-	ByteArray* array;
-	array = byteArrayCreate(array1->dataSize + array2->dataSize);
-	byteArrayAppend(array, array1->data);
-	byteArrayAppend(array, array2->data);
-	return array;
+    array->dataSize += dataSize;
 }

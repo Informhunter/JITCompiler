@@ -133,5 +133,5 @@ void compiledFuncFree(CompiledFunc f)
     byteArrayFree(f.stack);
     byteArrayFree(f.consts);
     free(f.stackP);
-    free(f.constP);
+    free(f.constsP);
 }

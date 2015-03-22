@@ -10,7 +10,8 @@ typedef struct
 {
     Func run;
     ByteArray* code;
-    float* stack;
+    ByteArray* stack;
+    ByteArray* consts;
 } CompiledFunc;
 
 CompiledFunc compileTree(Tree* tree);

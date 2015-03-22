@@ -64,3 +64,76 @@ void genMOV_EAX_ESP_4(ByteArray* code)
 {
     byteArrayAppend(code, "\x8B\x44\x24\x04", 4);
 }
+
+void genMOV_EDX_imm32(ByteArray* code, int32_t* pValue)
+{
+    byteArrayAppend(code, "\xBA", 1);
+    byteArrayAppend(code, (char *)pValue, 4);
+}
+
+void genADD_EDX_4(ByteArray* code)
+{
+    byteArrayAppend(code, "\x83\xC2\x04", 3);
+}
+
+void genSUB_EDX_4(ByteArray* code)
+{
+    byteArrayAppend(code, "\x83\xEA\x04", 3);
+}
+
+void genFSTP_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD9\x1A", 2);
+}
+
+void genFLD_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD9\x02", 2);
+}
+
+void genMOV_DWORD_PTR_EDX_imm32(ByteArray* code, int32_t* pValue)
+{
+    byteArrayAppend(code, "\xC7\x02", 2);
+    byteArrayAppend(code, (char *)pValue, 4);
+}
+
+void genMOV_DWORD_PTR_EDX_EAX(ByteArray* code)
+{
+    byteArrayAppend(code, "\x89\x02", 2);
+}
+
+void genADD_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD8\x02", 2);
+}
+
+void genSUB_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD8\x22", 2);
+}
+
+void genMUL_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD8\x0A", 2);
+}
+
+void genDIV_DWORD_PTR_EDX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD8\x32", 2);
+}
+
+void genMOV_ECX_imm32(ByteArray* code, int32_t* pValue)
+{
+    byteArrayAppend(code, "\xB9", 1);
+    byteArrayAppend(code, (char *)pValue, 4);
+}
+
+void genFLD_DWORD_PTR_ECX(ByteArray* code)
+{
+    byteArrayAppend(code, "\xD9\x01", 2);
+}
+
+void genADD_ECX_4(ByteArray* code)
+{
+    byteArrayAppend(code, "\x83\xC1\x04", 3);
+}

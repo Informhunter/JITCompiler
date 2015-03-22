@@ -110,7 +110,7 @@ CompiledFunc compileTree(Tree* tree)
 
     code = byteArrayCreate(2);
     consts = byteArrayCreate(2);
-    stack = byteArrayCreate(tree->height + 1);
+    stack = byteArrayCreate(sizeof(float) * (tree->height + 1));
 
     collectConstsR(tree->root, consts);
     generateCode(tree, stack, consts, code);

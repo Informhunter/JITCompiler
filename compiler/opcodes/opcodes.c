@@ -149,3 +149,16 @@ void genMOV_ECX_DWORD_PTR(ByteArray* code, void* srcAddress)
     byteArrayAppend(code, "\x8B\x0D", 2);
     byteArrayAppend(code, (char *)&srcAddress, 4);
 }
+
+
+void genLEA_EDX_DWORD_PTR(ByteArray* code, void* srcAddress)
+{
+    byteArrayAppend(code, "\x8D\x15", 2);
+    byteArrayAppend(code, (char *)&srcAddress, 4);
+}
+
+void genLEA_ECX_DWORD_PTR(ByteArray* code, void* srcAddress)
+{
+    byteArrayAppend(code, "\x8D\x0D", 2);
+    byteArrayAppend(code, (char *)&srcAddress, 4);
+}

@@ -31,5 +31,7 @@ void genFLD_DWORD_PTR_ECX(ByteArray* code);
 void genADD_ECX_4(ByteArray* code);
 void genMOV_EDX_DWORD_PTR(ByteArray* code, void* srcAddress);
 void genMOV_ECX_DWORD_PTR(ByteArray* code, void* srcAddress);
+void genLEA_EDX_DWORD_PTR(ByteArray* code, void* srcAddress);
+void genLEA_ECX_DWORD_PTR(ByteArray* code, void* srcAddress);
 
 #endif

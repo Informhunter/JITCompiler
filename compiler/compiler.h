@@ -12,6 +12,8 @@ typedef struct
     ByteArray* code;
     ByteArray* stack;
     ByteArray* consts;
+    void** stackP;
+    void** constsP;
 } CompiledFunc;
 
 CompiledFunc compileTree(Tree* tree);

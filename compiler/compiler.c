@@ -13,52 +13,48 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
         generateCodeR(root->left, code);  //left operand to be on top of the stack
     }
 
-    switch(root->type)
+    if(root->type == OperandVar)
     {
-        case OperatorPlus:
-            genFLD_DWORD_PTR_EDX(code);
-            genSUB_EDX_4(code);
-            genADD_DWORD_PTR_EDX(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            break;
+        genMOV_DWORD_PTR_EDX_EAX(code);
+    }
+    else if(root->type == OperandNegVar)
+    {
+        genMOV_DWORD_PTR_EDX_EAX(code);
+        genFLD_DWORD_PTR_EDX(code);
+        genFCHS(code);
+        genFSTP_DWORD_PTR_EDX(code);
+    }
+    else if(root->type == OperandConst)
+    {
+        genFLD_DWORD_PTR_ECX(code);
+        genFSTP_DWORD_PTR_EDX(code);
+        genADD_ECX_4(code);
+    }
+    else
+    {
+        genFLD_DWORD_PTR_EDX(code);
+        genSUB_EDX_4(code);
 
-        case OperatorMinus:
-            genFLD_DWORD_PTR_EDX(code);
-            genSUB_EDX_4(code);
-            genSUB_DWORD_PTR_EDX(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            break;
+        switch(root->type)
+        {
+            case OperatorPlus:
+                genADD_DWORD_PTR_EDX(code);
+                break;
 
-        case OperatorMul:
-            genFLD_DWORD_PTR_EDX(code);
-            genSUB_EDX_4(code);
-            genMUL_DWORD_PTR_EDX(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            break;
+            case OperatorMinus:
+                genSUB_DWORD_PTR_EDX(code);
+                break;
 
-        case OperatorDiv:
-            genFLD_DWORD_PTR_EDX(code);
-            genSUB_EDX_4(code);
-            genDIV_DWORD_PTR_EDX(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            break;
+            case OperatorMul:
+                genMUL_DWORD_PTR_EDX(code);
+                break;
 
-        case OperandVar:
-            genMOV_DWORD_PTR_EDX_EAX(code);
-            break;
-
-        case OperandNegVar:
-            genMOV_DWORD_PTR_EDX_EAX(code);
-            genFLD_DWORD_PTR_EDX(code);
-            genFCHS(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            break;
-
-        case OperandConst:
-            genFLD_DWORD_PTR_ECX(code);
-            genFSTP_DWORD_PTR_EDX(code);
-            genADD_ECX_4(code);
-            break;
+            case OperatorDiv:
+                genDIV_DWORD_PTR_EDX(code);
+                break;
+        }
+        
+        genFSTP_DWORD_PTR_EDX(code);
     }
 }
 

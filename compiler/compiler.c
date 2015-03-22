@@ -61,11 +61,13 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
 static void generateCode(Tree* tree, void** stack, void** consts, ByteArray* resultCode)
 {
     ByteArray* code = resultCode;
-    //Argument parsing
+    //X value -> EAX
     genMOV_EAX_ESP_4(code);
+    //EDX now points to the top of our stack
     genMOV_EDX_DWORD_PTR(code, (int32_t*)stack);
+    //ECX now points to the beginning of the const list
     genMOV_ECX_DWORD_PTR(code, (int32_t*)consts);
-    //Calculating
+    //Generating math code
     generateCodeR(tree->root, code);
     //Return value stuff
     genFLD_DWORD_PTR_EDX(code);

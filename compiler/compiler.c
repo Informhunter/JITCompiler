@@ -65,10 +65,14 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
 static void generateCode(Tree* tree, ByteArray* stack, ByteArray* consts, ByteArray* resultCode)
 {
     ByteArray* code = resultCode;
+    char** sData = malloc(sizeof(char*));
+    char** cData = malloc(sizeof(char*));
+    *sData = stack->data;
+    *cData = stack->data;
     //Some stack allocation stuff + argument parsing
     genMOV_EAX_ESP_4(code);
-    genMOV_EDX_imm32(code, (int32_t*)&stack->data);
-    genMOV_ECX_imm32(code, (int32_t*)&consts->data);
+    genMOV_EDX_DWORD_PTR(code, (int32_t*)sData);
+    genMOV_ECX_DWORD_PTR(code, (int32_t*)cData);
     //Calculating
     generateCodeR(tree->root, code);
     //Return value stuff

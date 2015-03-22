@@ -68,7 +68,7 @@ static void generateCode(Tree* tree, ByteArray* stack, ByteArray* consts, ByteAr
     char** sData = malloc(sizeof(char*));
     char** cData = malloc(sizeof(char*));
     *sData = stack->data;
-    *cData = const->data;
+    *cData = consts->data;
     //Some stack allocation stuff + argument parsing
     genMOV_EAX_ESP_4(code);
     genMOV_EDX_DWORD_PTR(code, (int32_t*)sData);

@@ -21,7 +21,8 @@ void byteArrayAppend(ByteArray* array, const char* data, int dataSize)
 {
 	if(array->size - array->dataSize < dataSize)
 	{
-		array->size *= 2;
+        while(array->size - array->dataSize < dataSize)
+            array->size *= 2;
 		array->data = realloc(array->data, array->size);
 	}
 	memcpy(array->data + array->dataSize, data, dataSize);

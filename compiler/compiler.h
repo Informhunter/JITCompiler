@@ -19,5 +19,4 @@ typedef struct
 CompiledFunc compileTree(Tree* tree);
 void freeCompiledFunc(CompiledFunc f);
 
-
 #endif

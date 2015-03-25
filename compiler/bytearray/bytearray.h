@@ -10,7 +10,6 @@ typedef struct
 
 ByteArray* byteArrayCreate(int initialSize);
 void byteArrayFree(ByteArray* array);
-
 void byteArrayAppend(ByteArray* array, const char* data, int dataSize);
 
 

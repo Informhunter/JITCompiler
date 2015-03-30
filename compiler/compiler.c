@@ -38,19 +38,19 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
         switch(root->type)
         {
             case OperatorPlus:
-                genADD_DWORD_PTR_EDX(code);
+                genFADD_DWORD_PTR_EDX(code);
                 break;
 
             case OperatorMinus:
-                genSUB_DWORD_PTR_EDX(code);
+                genFSUB_DWORD_PTR_EDX(code);
                 break;
 
             case OperatorMul:
-                genMUL_DWORD_PTR_EDX(code);
+                genFMUL_DWORD_PTR_EDX(code);
                 break;
 
             case OperatorDiv:
-                genDIV_DWORD_PTR_EDX(code);
+                genFDIV_DWORD_PTR_EDX(code);
                 break;
         }
 

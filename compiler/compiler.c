@@ -15,62 +15,59 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
 
     if(root->type == OperandVar)
     {
-        genMOV_DWORD_PTR_EDX_EAX(code);
+        genPUSH_EAX(code);
     }
     else if(root->type == OperandNegVar)
     {
-        genMOV_DWORD_PTR_EDX_EAX(code);
-        genFLD_DWORD_PTR_EDX(code);
+        genPUSH_EAX(code);
+        genFLD_DWORD_PTR_ESP(code);
         genFCHS(code);
-        genFSTP_DWORD_PTR_EDX(code);
+        genFSTP_DWORD_PTR_ESP(code);
     }
     else if(root->type == OperandConst)
     {
-        genFLD_DWORD_PTR_ECX(code);
-        genFSTP_DWORD_PTR_EDX(code);
+        genPUSH_DWORD_PTR_ECX(code);
         genADD_ECX_4(code);
     }
     else
     {
-        genFLD_DWORD_PTR_EDX(code);
-        genSUB_EDX_4(code);
-
+        genFLD_DWORD_PTR_ESP(code);
+        genADD_ESP_4(code);
         switch(root->type)
         {
             case OperatorPlus:
-                genFADD_DWORD_PTR_EDX(code);
+                genFADD_DWORD_PTR_ESP(code);
                 break;
 
             case OperatorMinus:
-                genFSUB_DWORD_PTR_EDX(code);
+                genFSUB_DWORD_PTR_ESP(code);
                 break;
 
             case OperatorMul:
-                genFMUL_DWORD_PTR_EDX(code);
+                genFMUL_DWORD_PTR_ESP(code);
                 break;
 
             case OperatorDiv:
-                genFDIV_DWORD_PTR_EDX(code);
+                genFDIV_DWORD_PTR_ESP(code);
                 break;
         }
 
-        genFSTP_DWORD_PTR_EDX(code);
+        genFSTP_DWORD_PTR_ESP(code);
     }
 }
 
-static void generateCode(Tree* tree, void** stack, void** consts, ByteArray* resultCode)
+static void generateCode(Tree* tree, void** consts, ByteArray* resultCode)
 {
     ByteArray* code = resultCode;
     //X value -> EAX
     genMOV_EAX_ESP_4(code);
-    //EDX now points to the top of our stack
-    genMOV_EDX_DWORD_PTR(code, (int32_t*)stack);
     //ECX now points to the beginning of the const list
     genMOV_ECX_DWORD_PTR(code, (int32_t*)consts);
     //Generating math code
     generateCodeR(tree->root, code);
     //Return value stuff
-    genFLD_DWORD_PTR_EDX(code);
+    genFLD_DWORD_PTR_ESP(code);
+    genADD_ESP_4(code);
     genRET(code);
 }
 
@@ -100,40 +97,31 @@ CompiledFunc compileTree(Tree* tree)
     ByteArray* consts;
 
     ByteArray* code;
-    ByteArray* stack;
 
 
     code = byteArrayCreate(2);
     consts = byteArrayCreate(2);
-    stack = byteArrayCreate(sizeof(float) * (tree->height + 1));
 
 
 
     collectConstsR(tree->root, consts);
 
-    result.stackP = malloc(sizeof(void*));
     result.constsP = malloc(sizeof(void*));
-
-    *result.stackP = stack->data;
     *result.constsP = consts->data;
 
-    generateCode(tree, result.stackP, result.constsP, code);
+    generateCode(tree, result.constsP, code);
 
     VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READWRITE, &oldP);
 
     result.code = code;
     result.run = (Func)result.code->data;
-    result.stack = stack;
     result.consts = consts;
-
     return result;
 }
 
 void compiledFuncFree(CompiledFunc f)
 {
     byteArrayFree(f.code);
-    byteArrayFree(f.stack);
     byteArrayFree(f.consts);
-    free(f.stackP);
     free(f.constsP);
 }

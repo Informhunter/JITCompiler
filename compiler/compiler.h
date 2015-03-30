@@ -10,9 +10,7 @@ typedef struct
 {
     Func run;
     ByteArray* code;
-    ByteArray* stack;
     ByteArray* consts;
-    void** stackP;
     void** constsP;
 } CompiledFunc;
 

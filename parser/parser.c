@@ -66,8 +66,9 @@ static OperatorPriority getOperatorPriority(char c)
 
 static int getDivisionIndex(char* expression, int start, int end)
 {
-    int i;
+    int i, j;
     int bracketNestingLevel = 0;
+    int minPriorityCount = 0;
     int minPriorityMetIndex = -1;
     OperatorPriority minPriorityMet = MaxPriority;
     OperatorPriority currentPriority;
@@ -87,13 +88,44 @@ static int getDivisionIndex(char* expression, int start, int end)
         else if(isOperator(expression[i]) && bracketNestingLevel == 0)
         {
             currentPriority = getOperatorPriority(expression[i]);
-            if(currentPriority <= minPriorityMet)
+            if(currentPriority == minPriorityMet)
+                minPriorityCount++;
+            if(currentPriority < minPriorityMet)
             {
                 minPriorityMet = currentPriority;
                 minPriorityMetIndex = i;
+                minPriorityCount = 1;
             }
         }
     }
+
+    if(minPriorityMetIndex != -1 && minPriorityCount >= 3)
+    {
+        for(i = start; i <= end; i++)
+        {
+            if(expression[i] == '(')
+            {
+                bracketNestingLevel++;
+            }
+            else if(expression[i] == ')')
+            {
+                bracketNestingLevel--;
+            }
+            else if(isOperator(expression[i]) && bracketNestingLevel == 0)
+            {
+                if(getOperatorPriority(expression[i]) == minPriorityMet)
+                {
+                    j++;
+                    if(j == minPriorityCount / 2)
+                    {
+                        minPriorityMetIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     return minPriorityMetIndex;
 }
 

@@ -9,7 +9,6 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
     if(root->left && root->right)
     {
         generateCodeR(root->right, code); //Generating in this order, because we need 
-        genADD_EDX_4(code);
         generateCodeR(root->left, code);  //left operand to be on top of the stack
     }
 

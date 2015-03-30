@@ -25,8 +25,7 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
     }
     else if(root->type == OperandConst)
     {
-        genPUSH_DWORD_PTR_ECX(code);
-        genADD_ECX_4(code);
+        genPUSH_imm32(code, (int32_t*)&root->value);
     }
     else
     {
@@ -55,13 +54,11 @@ static void generateCodeR(TreeNode* root, ByteArray* resultCode)
     }
 }
 
-static void generateCode(Tree* tree, void** consts, ByteArray* resultCode)
+static void generateCode(Tree* tree, ByteArray* resultCode)
 {
     ByteArray* code = resultCode;
     //X value -> EAX
     genMOV_EAX_ESP_4(code);
-    //ECX now points to the beginning of the const list
-    genMOV_ECX_DWORD_PTR(code, (int32_t*)consts);
     //Generating math code
     generateCodeR(tree->root, code);
     //Return value stuff
@@ -70,57 +67,25 @@ static void generateCode(Tree* tree, void** consts, ByteArray* resultCode)
     genRET(code);
 }
 
-static void collectConstsR(TreeNode* root, ByteArray* consts)
-{
-    float* pConst;
-    if(root)
-    {
-        if(root->type == OperandConst)
-        {
-            pConst = &root->value;
-            byteArrayAppend(consts, (char*)pConst, 4);
-        }
-        else if(root->type < OperandConst)
-        {
-            collectConstsR(root->right, consts);
-            collectConstsR(root->left, consts);
-        }
-    }
-}
-
 
 CompiledFunc compileTree(Tree* tree)
 {
     CompiledFunc result;
     DWORD oldP;
-    ByteArray* consts;
-
     ByteArray* code;
 
-
     code = byteArrayCreate(2);
-    consts = byteArrayCreate(2);
 
-
-
-    collectConstsR(tree->root, consts);
-
-    result.constsP = malloc(sizeof(void*));
-    *result.constsP = consts->data;
-
-    generateCode(tree, result.constsP, code);
+    generateCode(tree, code);
 
     VirtualProtect(code->data, code->dataSize, PAGE_EXECUTE_READWRITE, &oldP);
 
     result.code = code;
     result.run = (Func)result.code->data;
-    result.consts = consts;
     return result;
 }
 
 void compiledFuncFree(CompiledFunc f)
 {
     byteArrayFree(f.code);
-    byteArrayFree(f.consts);
-    free(f.constsP);
 }

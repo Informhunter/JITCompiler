@@ -18,6 +18,7 @@ void genMOV_EAX_ESP_4(ByteArray* code);
 void genMOV_ECX_DWORD_PTR(ByteArray* code, void* srcAddress);
 void genPUSH_DWORD_PTR_ECX(ByteArray* code);
 void genPUSH_EAX(ByteArray* code);
+void genPUSH_imm32(ByteArray* code, int32_t* pValue);
 void genRET(ByteArray* code);
 
 #endif

@@ -10,11 +10,9 @@ typedef struct
 {
     Func run;
     ByteArray* code;
-    ByteArray* consts;
-    void** constsP;
 } CompiledFunc;
 
 CompiledFunc compileTree(Tree* tree);
-void freeCompiledFunc(CompiledFunc f);
+void compiledFuncFree(CompiledFunc f);
 
 #endif

@@ -77,3 +77,9 @@ void genFDIV_DWORD_PTR_ESP(ByteArray* code)
 {
     byteArrayAppend(code, "\xD8\x34\x24", 3);
 }
+
+void genPUSH_imm32(ByteArray* code, int32_t* pValue)
+{
+    byteArrayAppend(code, "\x68", 1);
+    byteArrayAppend(code, (char *)pValue, 4);
+}

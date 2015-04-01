@@ -62,6 +62,7 @@ static void generateCode(Tree* tree, ByteArray* resultCode)
     //Generating math code
     generateCodeR(tree->root, code);
     //Return value stuff
+    genFLD_DWORD_PTR_ESP(code);
     genADD_ESP_4(code);
     genRET(code);
 }

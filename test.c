@@ -65,6 +65,8 @@ int main(int argc, char** argv)
     sscanf(argv[1], "%d", &iters);
     sscanf(argv[2], "%d", &maxSize);
 
+    maxSize = maxSize / 4;
+
     fileJIT = fopen("jitTime.txt", "w");
     fileNormal = fopen("normalTime.txt", "w");
 

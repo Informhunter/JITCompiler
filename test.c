@@ -79,8 +79,8 @@ int main(int argc, char** argv)
         expr[i*4+4] = '5';
         expr[i*4+5] = '\0';
         tree = buildTreeForExpression(expr);
-        fprintf(fileJIT, "%d %lf\n", i, measureTimeJIT(tree, iters));
-        fprintf(fileNormal, "%d %lf\n", i, measureTimeNormal(tree, iters));
+        fprintf(fileJIT, "%d %lf\n", 5 + 4 * i, measureTimeJIT(tree, iters));
+        fprintf(fileNormal, "%d %lf\n", 5 + 4 * i, measureTimeNormal(tree, iters));
         treeFree(tree);
         if(i % (maxSize / 10) == 0)
         {

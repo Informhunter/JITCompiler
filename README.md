@@ -11,4 +11,4 @@ Once the parse tree is acquired, it is translated into x86 machine code which ca
 ## Results
 The approach gave 9x speedup of expression calculation compared to baseline algorithm (parse tree interpretation).
 Also based on the results the following article was published with the complete description of implementation of the project.
-https://habr.com/post/254831/ (russion)
+https://habr.com/post/254831/ (russian)

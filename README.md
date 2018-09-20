@@ -1,6 +1,6 @@
 # JITCompiler
-JIT compiler for algebraric expressions was developed as an experimental project in 2015.
-The goal of the project was to measure the performance improvement of algebraric expression interpreter when using just in time compilation.
+JIT compiler for algebraic expressions was developed as an experimental project in 2015.
+The goal of the project was to measure the performance improvement of algebraic expression interpreter when using just in time compilation.
 
 ## How it works
 First, expression (containing variable `x`, constants and +-*/ operations) is transformed into a parse tree.
